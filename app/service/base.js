@@ -2,7 +2,7 @@
  * @Author: chenyuzhao.karl@gamil.com
  * @Date: 2019-05-10 11:17:17
  * @Last Modified by: chenyuzhao.karl@gamil.com
- * @Last Modified time: 2019-05-10 21:07:51
+ * @Last Modified time: 2019-05-14 20:54:13
  */
 
 'use strict';
@@ -66,7 +66,7 @@ class BaseService extends Service {
    * @description 文档找回-必须是逻辑删除的文档
    * @param {String} id 文档ID
    */
-  async getback(id) {
+  async retrieve(id) {
     if (this.operator === null) {
       return null;
     }
@@ -158,13 +158,28 @@ class BaseService extends Service {
       where.$or = where.$or || [];
       this.searchField.forEach(key => {
         const reg = {};
+        // searchField =['key1',{'keyNum':number}，{'keyDate':date}]
         if (typeof key === 'object') {
-
+          for (const [ k, v ] in Object.entries(key)) {
+            if (v === 'number') {
+              const num = parseInt(search, 0);
+              if (isNaN(num) && underscore.isNumber(num)) {
+                reg[k] = num;
+                where.$or.push(reg);
+              }
+            }
+          }
         } else {
           reg[key] = $reg;
           where.$or.push(reg);
         }
       });
+    }
+
+    for (const [ k, v ] in Object.entries(where)) {
+      if (!underscore.isNumber(v) && !underscore.isBoolean(v) && !underscore.isDate(v) && underscore.isEmpty(v)) {
+        delete where[k];
+      }
     }
 
     let promiseList = this.operator.find(where, filter).sort(sort).skip(pageIndex * pageSize);
@@ -177,6 +192,17 @@ class BaseService extends Service {
     }
     const [ count, list ] = await Promise.all([ promiseCount, promiseList ]);
     return { count, list };
+  }
+
+  /**
+   * @description 获取文档详情
+   * @param {String} id 文档ID
+   */
+  async detail(id) {
+    if (this.operator === null) {
+      return null;
+    }
+    return await this.operator.findById(id);
   }
 }
 
