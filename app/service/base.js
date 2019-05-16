@@ -1,8 +1,8 @@
 /*
  * @Author: chenyuzhao.karl@gamil.com
  * @Date: 2019-05-10 11:17:17
- * @Last Modified by: chenyuzhao.karl@gamil.com
- * @Last Modified time: 2019-05-14 20:54:13
+ * @Last Modified by: chenyuzhao.karl@gmail.com
+ * @Last Modified time: 2019-05-16 15:30:06
  */
 
 'use strict';
@@ -18,7 +18,6 @@ class BaseService extends Service {
     this.operator = null;
     this.userName = '';
     this.mongoose = mongoose;
-    this.logger = this.ctx.logger;
 
     this.searchField = [];
   }
@@ -72,9 +71,9 @@ class BaseService extends Service {
     }
     const result = await this.operator.update({ _id: id }, { $set: { 'docInfo.state': true } });
     if (result.ok) {
-      this.logger.debug('[document getback success] id:{0}', id);
+      this.logger.debug('[document retrieve success] id:{0}', id);
     }
-    this.logger.info('[document getback fail] id:{0}', id);
+    this.logger.info('[document retrieve fail] id:{0}', id);
     return result;
   }
   /**
@@ -94,7 +93,7 @@ class BaseService extends Service {
    * @param {String} id 文档ID
    * @param {Object} upDoc 更新内容
    */
-  async updateDoc(id, upDoc) {
+  async update(id, upDoc) {
     try {
       const originDoc = await this.operator.findById(id);
       if (!originDoc) {

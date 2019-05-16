@@ -1,8 +1,8 @@
 /*
  * @Author: chenyuzhao.karl@gamil.com
  * @Date: 2019-05-09 14:37:54
- * @Last Modified by: chenyuzhao.karl@gamil.com
- * @Last Modified time: 2019-05-10 16:46:02
+ * @Last Modified by: chenyuzhao.karl@gmail.com
+ * @Last Modified time: 2019-05-16 11:16:39
  */
 'use strict';
 
@@ -31,7 +31,7 @@ module.exports = app => {
    * @param {String} githubLink github链接
    * @param {String} blogLink 博客地址
    * @param {String} birthday 生日
-   * @param {String} marraiage 婚姻状况
+   * @param {String} marriage 婚姻状况
    * @param {String} nation 民族
    * @param {String} nativePlace 籍贯
    * @param {String} religion 宗教信仰
@@ -43,7 +43,7 @@ module.exports = app => {
    * @param {String} contactPeoplePhoneNumber 联系人电话
    * @param {String} photograph 照片
    */
-  const PersonInfomationSchema = new Schema({
+  const PersonInformationSchema = new Schema({
     id: {
       type: Number,
     },
@@ -139,14 +139,14 @@ module.exports = app => {
   });
   /**
    * @description 简历信息
-   * @param {PersonInfomationSchema} PersonInfomation 个人信息
+   * @param {PersonInformationSchema} PersonInformation 个人信息
    * @param {Number} type 简历类型 102 社招 101 校招
    * @param {Number} isSubmit 是否提交 1 已提交 0 未提交
    * @param {BaseSchema} docInfo 文档信息
    */
   const ResumeSchema = new Schema({
-    PersonInfomation: {
-      type: PersonInfomationSchema,
+    PersonInformation: {
+      type: PersonInformationSchema,
     },
     type: {
       type: Number,
